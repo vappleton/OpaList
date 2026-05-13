@@ -1,118 +1,63 @@
 package com.vappleto.todo;
 
-import java.util.Scanner;
-
-public class Main {
-
-    private static final Scanner userInput = new Scanner(System.in);
-    private static final TaskManager taskManager = new TaskManager();
-
-    public static void main(String[] args) {
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 
-        System.out.println("To-Do App Started");
+public class Main extends Application{
+    private final TaskManager taskManager = new TaskManager();
 
-        try {
+    @Override
+    public void start(Stage stage) {
+        Label title = new Label("My To-Do List");
+        ListView<String> taskListView = new ListView<>();
+        TextField taskInput = new TextField();
+        taskInput.setPromptText("Enter Task");
+        ComboBox<TaskCategory> categoryBox = new ComboBox<>();
+        categoryBox.getItems().addAll(TaskCategory.values());
+        categoryBox.setValue(TaskCategory.WORK);
+        Button addButton =
+                new Button("Add Task");
 
-            while (true) {
-                System.out.println("Choose an action:");
-                System.out.println("1. Add Task\n" +
-                                   "2. View Tasks\n" +
-                                   "3. Mark Task as Complete\n" +
-                                   "4. Remove Task\n" +
-                                   "5. Exit");
+        addButton.setOnAction(event -> {
+                    String description = taskInput.getText();
+                    TaskCategory category = categoryBox.getValue();
 
-                String choice = userInput.nextLine();
+                    if (!description.isBlank()) {
 
-                switch (choice) {
-                    case "1":
-                        System.out.println("Select a category:\n" +
-                                "1. Work\n" +
-                                "2. School\n" +
-                                "3. Self-Care" +
-                                "4. Family");
+                        taskManager.addTask(category, description);
 
-                        TaskCategory category = getCategory();
+                        taskListView.getItems().add("[" + category + "]" + description);
 
-                        if (category == null) continue;
+                        taskInput.clear();
+                    }
+                });
 
-                        System.out.println("Enter Task Description:");
 
-                        String taskDescription = userInput.nextLine();
-                        taskManager.addTask(category, taskDescription);
-                        System.out.println("Task Added!");
-                        break;
 
-                    case "2":
-                        taskManager.displayTasks();
-                        break;
+        VBox root = new VBox(10);
 
-                    case "3":
-                        System.out.println("Select category:\n" +
-                                "1. Work\n" +
-                                "2. School\n" +
-                                "3. Self-Care\n" +
-                                "4. Family\n");
+        root.setPadding(new Insets(15));
 
-                        category = getCategory();
-                        if (category == null) continue;
-                        taskManager.displayTasks();
+        root.getChildren().addAll(title, categoryBox, taskInput, addButton, taskListView);
 
-                        System.out.println("Enter task number to mark as complete:");
-                        int completeIndex = Integer.parseInt(userInput.nextLine());
-                        taskManager.markTaskComplete(category, completeIndex);
-                        break;
+        Scene scene = new Scene(root, 500, 400);
 
-                    case "4":
-                        System.out.println("Select a category:\n" +
-                                "1. Work\n" +
-                                "2. School\n" +
-                                "3. Self-Care" +
-                                "4. Family");
-                        category = getCategory();
-                        if (category == null) continue;
-                        taskManager.displayTasks();
-                        System.out.println("Enter task number to remove:");
-                        int removeIndex = Integer.parseInt(userInput.nextLine());
-                        taskManager.removeTask(category,removeIndex);
-                        break;
+        stage.setTitle("To-Do App");
 
-                    case "5":
-                        System.out.println("Goodbye!");
-                        userInput.close();
-                        return;
+        stage.setScene(scene);
 
-                    default:
-                        System.out.println("Invalid category. Please choose a valid option.");
-                }
+        stage.show();
 
-            }
-        } finally {
-            userInput.close();
-        }
+
     }
+    public static void main(String[] args) {
+        launch();
 
-    private static TaskCategory getCategory() {
-        String categoryInput = userInput.nextLine();
 
-        switch (categoryInput) {
-            case "1":
-                return TaskCategory.WORK;
-
-            case "2":
-                return TaskCategory.SCHOOL;
-
-            case "3":
-                return TaskCategory.SELF_CARE;
-
-            case "4":
-                return TaskCategory.FAMILY;
-
-            default:
-                System.out.println("Invalid category. Please choose a valid option.");
-
-            return null;
-
-        }
     }
 }
