@@ -6,9 +6,12 @@ public class TaskManager {
 
     private final Map<TaskCategory, List<Task>> tasks = new HashMap<>();
 
-    public void addTask(TaskCategory category, String description) {
-        tasks.computeIfAbsent(category, k-> new ArrayList<>())
-                .add(new Task(description));
+    public Task addTask(TaskCategory category, String description) {
+        Task task = new Task(description);
+
+        tasks.computeIfAbsent(category, k -> new ArrayList<>()).add(task);
+
+        return task;
     }
     public Map<TaskCategory, List<Task>> getTasks() {
         return tasks;

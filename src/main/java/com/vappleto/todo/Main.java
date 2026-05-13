@@ -14,7 +14,7 @@ public class Main extends Application{
     @Override
     public void start(Stage stage) {
         Label title = new Label("My To-Do List");
-        ListView<String> taskListView = new ListView<>();
+        ListView<Task> taskListView = new ListView<>();
         TextField taskInput = new TextField();
         taskInput.setPromptText("Enter Task");
         ComboBox<TaskCategory> categoryBox = new ComboBox<>();
@@ -31,11 +31,31 @@ public class Main extends Application{
 
                         taskManager.addTask(category, description);
 
-                        taskListView.getItems().add("[" + category + "]" + description);
+                        Task newTask = taskManager.addTask(category, description);
+
+                        taskListView.getItems().add(newTask);
 
                         taskInput.clear();
                     }
                 });
+        Button completeButton = new Button("Mark Complete");
+        completeButton.setOnAction(event -> {
+            Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
+
+            if (selectedTask != null) {
+                selectedTask.markCompleted();
+                taskListView.refresh();
+            }
+        });
+
+        Button removeButton = new Button("Remove Task");
+
+        removeButton.setOnAction(event -> {
+            Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
+            if (selectedTask != null) {
+                taskListView.getItems().remove(selectedTask);
+            }
+        });
 
 
 
@@ -43,7 +63,7 @@ public class Main extends Application{
 
         root.setPadding(new Insets(15));
 
-        root.getChildren().addAll(title, categoryBox, taskInput, addButton, taskListView);
+        root.getChildren().addAll(title, categoryBox, taskInput, addButton, taskListView, completeButton, removeButton);
 
         Scene scene = new Scene(root, 500, 400);
 
