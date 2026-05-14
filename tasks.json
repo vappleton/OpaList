@@ -1,0 +1,52 @@
+{
+  "WORK": [
+    {
+      "description": "Meeting",
+      "completed": true,
+      "category": "WORK",
+      "createdDate": "2026-05-13"
+    },
+    {
+      "description": "Project",
+      "completed": false,
+      "category": "WORK",
+      "createdDate": "2026-05-13"
+    }
+  ],
+  "SCHOOL": [
+    {
+      "description": "Assignment334",
+      "completed": false,
+      "category": "SCHOOL",
+      "createdDate": "2026-05-13"
+    },
+    {
+      "description": "Assignment321",
+      "completed": true,
+      "category": "SCHOOL",
+      "createdDate": "2026-05-13"
+    }
+  ],
+  "SELF_CARE": [
+    {
+      "description": "Journaling",
+      "completed": false,
+      "category": "SELF_CARE",
+      "createdDate": "2026-05-13"
+    },
+    {
+      "description": "Wrokout",
+      "completed": false,
+      "category": "SELF_CARE",
+      "createdDate": "2026-05-13"
+    }
+  ],
+  "FAMILY": [
+    {
+      "description": "Make appointment",
+      "completed": true,
+      "category": "FAMILY",
+      "createdDate": "2026-05-13"
+    }
+  ]
+}
