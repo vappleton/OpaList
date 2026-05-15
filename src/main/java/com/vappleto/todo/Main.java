@@ -232,7 +232,7 @@ public class Main extends Application{
 
         Scene scene = new Scene(root, 500, 400);
 
-        stage.setTitle("FocusFlow App");
+        stage.setTitle("OpaList App");
 
         stage.setScene(scene);
         highlightSelectedButton(

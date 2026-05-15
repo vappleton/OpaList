@@ -1,6 +1,6 @@
 # FocusFlow – ADHD-Friendly Daily Task Manager
 
-FocusFlow is a JavaFX-based productivity application designed to help users organize daily tasks in a simple, 
+OpaList is a JavaFX-based productivity application designed to help users organize daily tasks in a simple, 
 low-overwhelm environment. The application focuses on category-based task management, daily focus organization, 
 and persistent task tracking with an ADHD-friendly workflow.
 
