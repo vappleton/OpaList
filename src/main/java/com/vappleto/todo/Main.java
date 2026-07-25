@@ -39,6 +39,7 @@ public class Main extends Application{
         taskManager.saveTasks();
 
         Label title = new Label("Today's focus -" + today);
+        title.setStyle("-fx-font-size: 24px;" + "-fx-font-weight: bold;");
 
 
 
@@ -78,7 +79,6 @@ public class Main extends Application{
         Button addButton =
                 new Button("Add task to list");
 
-        Label title2 = new Label("Select a category");
 
         Button workButton = new Button("Work");
         Button schoolButton = new Button("School");
@@ -135,6 +135,7 @@ public class Main extends Application{
 
 
         TextField taskInput = new TextField();
+        taskInput.setPromptText("Add a task...");
 
         HBox categoryButtons = new HBox(10);
 
@@ -171,7 +172,7 @@ public class Main extends Application{
             taskInput.clear();
 
 
-                });
+        });
         Button completeButton = new Button("Mark Complete");
         completeButton.setOnAction(event -> {
             Task selectedTask = taskListView.getSelectionModel().getSelectedItem();
@@ -221,6 +222,41 @@ public class Main extends Application{
             highlightSelectedButton(allTasksButton, workButton, schoolButton, selfCareButton, familyButton);
             refreshAllTasks(taskListView);
         });
+        Button editButton = new Button("Edit Task");
+
+        editButton.setOnAction(event -> {
+            Task selectedTask =
+                    taskListView.getSelectionModel().getSelectedItem();
+
+            if (selectedTask == null) {
+                return;
+            }
+
+            TextInputDialog dialog =
+                    new TextInputDialog(selectedTask.getDescription());
+
+            dialog.setTitle("Edit Task");
+            dialog.setHeaderText("Update the selected task");
+            dialog.setContentText("Task description:");
+
+            dialog.showAndWait().ifPresent(newDescription -> {
+                if (!newDescription.isBlank()) {
+                    selectedTask.setDescription(newDescription.trim());
+
+                    try {
+                        taskManager.saveTasks();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    if (selectedCategory == null) {
+                        refreshAllTasks(taskListView);
+                    } else {
+                        refreshTaskList(taskListView);
+                    }
+                }
+            });
+        });
 
 
 
@@ -228,9 +264,9 @@ public class Main extends Application{
 
         root.setPadding(new Insets(15));
 
-        root.getChildren().addAll(title, taskInput, categoryButtons,  addButton, taskListView, completeButton, removeButton);
+        root.getChildren().addAll(title, taskInput, categoryButtons,  addButton, taskListView, completeButton, editButton, removeButton);
 
-        Scene scene = new Scene(root, 500, 400);
+        Scene scene = new Scene(root, 700, 550);
 
         stage.setTitle("OpaList App");
 
